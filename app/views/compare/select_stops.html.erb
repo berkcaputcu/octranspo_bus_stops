@@ -1,0 +1,5 @@
+<%= form_tag('select_routes', method: :get) do %>
+	<%= select_tag "stop1", options_from_collection_for_select(@stops, "stop_code", "full_name") %>
+	<%= select_tag "stop2", options_from_collection_for_select(@stops, "stop_code", "full_name") %>
+	<%= submit_tag 'Go' %>
+<% end %>

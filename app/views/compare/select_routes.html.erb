@@ -1,0 +1,36 @@
+<table>
+	<tr>
+		<td>Stop1: <%= @stop1 %></td>
+		<td>Stop2: <%= @stop2 %></td>
+	</tr>
+	<tr>
+		<td>
+			<table>
+				<tr>
+					<td>Route</td>
+					<td>Direction</td>
+				</tr>
+				<% @routes1.each do |route| %>
+				<tr>
+					<td><%= route[:no] %></td>
+					<td><%= route[:direction] %></td>
+				</tr>
+				<% end %>
+			</table>
+		</td>
+		<td>
+			<table>
+				<tr>
+					<td>Route</td>
+					<td>Direction</td>
+				</tr>
+				<% @routes2.each do |route| %>
+				<tr>
+					<td><%= route[:no] %></td>
+					<td><%= route[:direction] %></td>
+				</tr>
+				<% end %>
+			</table>
+		</td>
+	</tr>
+</table>
