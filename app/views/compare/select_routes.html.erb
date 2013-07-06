@@ -1,9 +1,12 @@
 <%= form_tag '/compare/result', method: :get do %>
 
+<%= hidden_field_tag 'stop1', @stop1.id %>
+<%= hidden_field_tag 'stop2', @stop2.id %>
+
 <table>
 	<tr>
-		<td>Stop1: <%= @stop1 %></td>
-		<td>Stop2: <%= @stop2 %></td>
+		<td>[Stop1: <%= @stop1.full_name %> Count: <%= @stop1.refresh_count %>]</td>
+		<td>[Stop2: <%= @stop2.full_name %> Count: <%= @stop2.refresh_count %>]</td>
 	</tr>
 	<tr>
 		<td>
@@ -15,7 +18,7 @@
 				</tr>
 				<% @routes1.each do |route| %>
 				<tr>
-					<td><%= radio_button_tag :route1, route %></td>
+					<td><%= radio_button_tag :route1, route.id %></td>
 					<td><%= route[:no] %></td>
 					<td><%= route[:direction] %></td>
 				</tr>
@@ -31,7 +34,7 @@
 				</tr>
 				<% @routes2.each do |route| %>
 				<tr>
-					<td><%= radio_button_tag :route2, route %></td>
+					<td><%= radio_button_tag :route2, route.id %></td>
 					<td><%= route[:no] %></td>
 					<td><%= route[:direction] %></td>
 				</tr>
@@ -44,3 +47,5 @@
 <%= submit_tag 'Go' %>
 
 <% end %>
+
+# notes: autoselect radio buttons

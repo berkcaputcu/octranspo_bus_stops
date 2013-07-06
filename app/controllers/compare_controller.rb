@@ -17,6 +17,8 @@ class CompareController < ApplicationController
 					:stopNo => @stop1.code
 					}))
 
+			@stop1.refreshed
+
 			response1.xpath("//route").each do |route|
 
 				r_no = route.at("routeno").content.to_s
@@ -28,7 +30,9 @@ class CompareController < ApplicationController
 					@stop1.routes.create(no: r_no, direction: r_direction)
 				else # if exist
 					unless StopTime.find_by_stop_id_and_route_id(@stop1, route_obj)
-						@stop1.stop_times.create(route_id: route_obj)
+						stop_time = @stop1.stop_times.create()
+						stop_time.route = route_obj
+						stop_time.save
 					end
 				end
 
@@ -44,6 +48,8 @@ class CompareController < ApplicationController
 					:stopNo => @stop2.code
 					}))
 
+			@stop2.refreshed
+
 			response2.xpath("//route").each do |route|
 
 				r_no = route.at("routeno").content.to_s
@@ -55,7 +61,9 @@ class CompareController < ApplicationController
 					@stop2.routes.create(no: r_no, direction: r_direction)
 				else # if exist
 					unless StopTime.find_by_stop_id_and_route_id(@stop2, route_obj)
-						@stop2.stop_times.create(route_id: route_obj)
+						stop_time = @stop2.stop_times.create()
+						stop_time.route = route_obj
+						stop_time.save
 					end
 				end
 
@@ -65,7 +73,51 @@ class CompareController < ApplicationController
 	end
 
 	def result
-		@route1 = params[:route1]
-		@route2 = params[:route2]
+		@stop1 = Stop.find(params[:stop1])
+		@stop2 = Stop.find(params[:stop2])
+		@route1 = Route.find(params[:route1])
+		@route2 = Route.find(params[:route2])
+
+		@response1 = Nokogiri::HTML(RestClient.post(
+			ENV['GetNextTripsForStop'],
+			{ :apiKey => ENV['apiKey'],
+				:appID => ENV['appID'],
+				:stopNo => @stop1.code,
+				:routeNo => @route1.no
+				}))
+
+		@rd_trips = []
+		@response1.xpath("//routedirection").each do |rd|
+			if @route1.direction == rd.at("direction").content.to_s
+				Nokogiri.HTML(rd.to_s).xpath("//adjustedscheduletime").each do |time|
+					@rd_trips << time.content.to_i
+				end
+			end
+		end
+
+		@stop_time1 = StopTime.find_by_stop_id_and_route_id(@stop1, @route1)
+		@stop_time1.update_times(@rd_trips)
+
+
+		@response2 = Nokogiri::HTML(RestClient.post(
+			ENV['GetNextTripsForStop'],
+			{ :apiKey => ENV['apiKey'],
+				:appID => ENV['appID'],
+				:stopNo => @stop2.code,
+				:routeNo => @route2.no
+				}))
+
+		@rd_trips = []
+		@response2.xpath("//routedirection").each do |rd|
+			if @route2.direction == rd.at("direction").content.to_s
+				Nokogiri.HTML(rd.to_s).xpath("//adjustedscheduletime").each do |time|
+					@rd_trips << time.content.to_i
+				end
+			end
+		end
+
+		@stop_time2 = StopTime.find_by_stop_id_and_route_id(@stop2, @route2)
+		@stop_time2.update_times(@rd_trips)
+
 	end
 end
