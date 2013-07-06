@@ -11,14 +11,33 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130704133646) do
+ActiveRecord::Schema.define(:version => 20130705223634) do
 
-  create_table "stops", :force => true do |t|
-    t.string   "stop_id"
-    t.integer  "stop_code"
-    t.string   "stop_name"
+  create_table "routes", :force => true do |t|
+    t.integer  "no"
+    t.string   "direction"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "stop_times", :force => true do |t|
+    t.integer  "stop_id"
+    t.integer  "route_id"
+    t.integer  "time_left"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "stop_times", ["stop_id", "route_id"], :name => "index_stop_times_on_stop_id_and_route_id", :unique => true
+
+  create_table "stops", :force => true do |t|
+    t.integer  "code"
+    t.string   "name"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+    t.datetime "expires_at"
+    t.decimal  "lat",        :precision => 10, :scale => 6
+    t.decimal  "long",       :precision => 10, :scale => 6
   end
 
 end

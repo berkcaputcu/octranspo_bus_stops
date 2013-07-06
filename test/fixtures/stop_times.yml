@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  stop: 
+  route: 
+  time_left: 
+
+two:
+  stop: 
+  route: 
+  time_left: 

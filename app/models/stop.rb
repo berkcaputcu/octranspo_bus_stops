@@ -1,14 +1,26 @@
 class Stop < ActiveRecord::Base
-  attr_accessible :stop_id, :stop_code, :stop_name
+  attr_accessible :name, :code, :lat, :long, :expires_at
 
-  validates :stop_id, uniqueness: true
-  validates_presence_of :stop_id
-  validates_presence_of :stop_code
-  validates_presence_of :stop_name
+  has_many :stop_times
+  has_many :routes, through: :stop_times
 
-  default_scope order('stop_code ASC')
+  validates_presence_of :code
+  validates_presence_of :name
+
+  default_scope order('code ASC')
 
   def full_name
-  	"#{stop_code} - #{stop_name}"
+  	"#{code} - #{name}"
   end
+
+  def coordinates
+  	"#{lat}, #{long}"
+  end
+
+  def expired?
+  	expires_at.blank? or Time.now > expires_at
+  end
+
+  # add method for rotues => refresh routes before sending
+
 end

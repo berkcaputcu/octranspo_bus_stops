@@ -1,11 +1,16 @@
 OctranspoStopTimes::Application.routes.draw do
-  get "compare/select_stops"
+  
 
-  get "compare/select_routes"
 
-  get "compare/result"
+  # get "compare/select_stops"
 
+  # get "compare/select_routes"
+
+  # get "compare/result"
+
+  resources :routes
   resources :stops
+  resources :stop_times
 
 
   # The priority is based upon order of creation:
@@ -57,7 +62,7 @@ OctranspoStopTimes::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'compare#select_stops'
 
   # See how all your routes lay out with "rake routes"
 

@@ -1,3 +1,5 @@
+<%= form_tag '/compare/result', method: :get do %>
+
 <table>
 	<tr>
 		<td>Stop1: <%= @stop1 %></td>
@@ -7,11 +9,13 @@
 		<td>
 			<table>
 				<tr>
+					<td></td>
 					<td>Route</td>
 					<td>Direction</td>
 				</tr>
 				<% @routes1.each do |route| %>
 				<tr>
+					<td><%= radio_button_tag :route1, route %></td>
 					<td><%= route[:no] %></td>
 					<td><%= route[:direction] %></td>
 				</tr>
@@ -21,11 +25,13 @@
 		<td>
 			<table>
 				<tr>
+					<td></td>
 					<td>Route</td>
 					<td>Direction</td>
 				</tr>
 				<% @routes2.each do |route| %>
 				<tr>
+					<td><%= radio_button_tag :route2, route %></td>
 					<td><%= route[:no] %></td>
 					<td><%= route[:direction] %></td>
 				</tr>
@@ -34,3 +40,7 @@
 		</td>
 	</tr>
 </table>
+
+<%= submit_tag 'Go' %>
+
+<% end %>
