@@ -89,13 +89,20 @@ class CompareController < ApplicationController
 		@rd_trips = []
 		@response1.xpath("//routedirection").each do |rd|
 			if @route1.direction == rd.at("direction").content.to_s
-				Nokogiri.HTML(rd.to_s).xpath("//adjustedscheduletime").each do |time|
-					@rd_trips << time.content.to_i
+				Nokogiri.HTML(rd.to_s).xpath("//trip").each do |trip|
+					@rd_trips << trip.at("adjustedscheduletime").content.to_i
 				end
 			end
 		end
 
 		@stop_time1 = StopTime.find_by_stop_id_and_route_id(@stop1, @route1)
+
+		unless @stop_time1
+			@stop_time1 = @stop1.stop_times.create()
+			@stop_time1.route = @route1
+			@stop_time1.save
+		end
+
 		@stop_time1.update_times(@rd_trips)
 
 
@@ -110,13 +117,18 @@ class CompareController < ApplicationController
 		@rd_trips = []
 		@response2.xpath("//routedirection").each do |rd|
 			if @route2.direction == rd.at("direction").content.to_s
-				Nokogiri.HTML(rd.to_s).xpath("//adjustedscheduletime").each do |time|
-					@rd_trips << time.content.to_i
+				Nokogiri.HTML(rd.to_s).xpath("//trip").each do |trip|
+					@rd_trips << trip.at("adjustedscheduletime").content.to_i
 				end
 			end
 		end
 
 		@stop_time2 = StopTime.find_by_stop_id_and_route_id(@stop2, @route2)
+		unless @stop_time2
+			@stop_time2 = @stop2.stop_times.create()
+			@stop_time2.route = @route2
+			@stop_time2.save
+		end
 		@stop_time2.update_times(@rd_trips)
 
 	end
