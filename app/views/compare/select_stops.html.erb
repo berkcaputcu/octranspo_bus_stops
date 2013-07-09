@@ -1,5 +1,36 @@
-<%= form_tag '/compare/select_routes', :method => :get do %>
-	<%= select_tag "stop1", options_from_collection_for_select(@stops, "id", "full_name") %>
-	<%= select_tag "stop2", options_from_collection_for_select(@stops, "id", "full_name") %>
-	<%= submit_tag 'Go' %>
+
+<%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false}, markers: { data: @json, options: { do_clustering: true, clusterer_maxZoom: 13 } }) %>
+
+<%= content_for :scripts do %>
+<script type="text/javascript" charset="utf-8">
+Gmaps.map.callback = function() {
+	var stop1_selected = false;
+
+	for (var i = 0; i <  Gmaps.map.markers.length; ++i) {
+		var marker = Gmaps.map.markers[i].serviceObject
+		marker.marker_id = Gmaps.map.markers[i].id;
+		marker.marker_name = Gmaps.map.markers[i].name;
+		google.maps.event.addListener(marker, 'rightclick', function() {
+			var answer = confirm("Do you want to select stop: " + this.marker_name + "?");
+			if (!stop1_selected && answer) {
+				$("#stop1").val(this.marker_id);
+				stop1_selected = true;
+			} else if (stop1_selected && answer) {
+				$("#stop2").val(this.marker_id);
+				$('#stops_form').submit();
+			}
+		});
+	}
+}
+</script>
+<% end %>
+
+Select 1st Stop
+Left click to see info, Right click to select
+
+
+
+<%= form_tag '/compare/select_routes', :method => :get, id: 'stops_form' do %>
+<%= hidden_field_tag "stop1" %>
+<%= hidden_field_tag "stop2" %>
 <% end %>

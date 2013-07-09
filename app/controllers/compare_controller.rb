@@ -1,6 +1,9 @@
 class CompareController < ApplicationController
 	def select_stops
 		@stops = Stop.all
+		@json = Stop.all.to_gmaps4rails do |stop|
+			"\"id\": \"#{stop.id}\", \"name\": \"#{stop.full_name}\""
+		end
 	end
 
 	def select_routes
