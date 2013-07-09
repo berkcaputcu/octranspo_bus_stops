@@ -11,7 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130706143656) do
+ActiveRecord::Schema.define(:version => 20130709183646) do
+
+  create_table "adjusted_times", :force => true do |t|
+    t.integer  "time_left"
+    t.decimal  "age"
+    t.decimal  "latitude",     :precision => 10, :scale => 6
+    t.decimal  "longitude",    :precision => 10, :scale => 6
+    t.integer  "stop_time_id"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+  end
+
+  add_index "adjusted_times", ["stop_time_id"], :name => "index_adjusted_times_on_stop_time_id"
 
   create_table "routes", :force => true do |t|
     t.integer  "no"
@@ -23,11 +35,8 @@ ActiveRecord::Schema.define(:version => 20130706143656) do
   create_table "stop_times", :force => true do |t|
     t.integer  "stop_id"
     t.integer  "route_id"
-    t.integer  "time_left1"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "time_left2"
-    t.integer  "time_left3"
   end
 
   add_index "stop_times", ["stop_id", "route_id"], :name => "index_stop_times_on_stop_id_and_route_id", :unique => true
@@ -41,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20130706143656) do
     t.decimal  "lat",           :precision => 10, :scale => 6
     t.decimal  "long",          :precision => 10, :scale => 6
     t.integer  "refresh_count",                                :default => 0
+    t.boolean  "gmaps"
   end
 
 end

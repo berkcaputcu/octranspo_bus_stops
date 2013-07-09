@@ -1,21 +1,21 @@
+<%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false}, markers: { data: @json }) %>
+
 <h1>VS</h1>
 <table>
 	<tr>
-		<td>Route: <%= @route1.no %></td>
-		<td>Route: <%= @route2.no %></td>
+		<td>Route</td>
+		<td>1st Bus</td>
+		<td>2nd Bus</td>
+		<td>3rd Bus</td>
 	</tr>
+	<% @stop_times.each do |st| %>
 	<tr>
-		<td><%= @stop_time1.time_left1 %></td>
-		<td><%= @stop_time2.time_left1 %></td>
+		<td><%= st.route.no %></td>
+		<% st.adjusted_times.each do |at| %>
+		<td><%= at.time_left %><%= "*" if at.scheduled? %></td>
+		<% end %>
 	</tr>
-	<tr>
-		<td><%= @stop_time1.time_left2 %></td>
-		<td><%= @stop_time2.time_left2 %></td>
-	</tr>
-	<tr>
-		<td><%= @stop_time1.time_left3 %></td>
-		<td><%= @stop_time2.time_left3 %></td>
-	</tr>
+	<% end %>
 </table>
 
 # add boolean for gps data or not <br>

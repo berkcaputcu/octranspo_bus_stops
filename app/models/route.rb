@@ -4,4 +4,12 @@ class Route < ActiveRecord::Base
   has_many :stop_times
   has_many :stops, through: :stop_times
 
+  validates_uniqueness_of :no, scope: :direction
+  validates_presence_of :no
+  validates_presence_of :direction
+
+  def full_name
+  	"#{no} - #{direction}"
+  end
+
 end

@@ -11,6 +11,7 @@ OctranspoStopTimes::Application.routes.draw do
   resources :routes
   resources :stops
   resources :stop_times
+  resources :adjusted_times
 
 
   # The priority is based upon order of creation:

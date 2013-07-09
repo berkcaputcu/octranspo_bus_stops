@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  time_left: 1
+  age: 9.99
+  latitude: 9.99
+  longitude: 9.99
+
+two:
+  time_left: 1
+  age: 9.99
+  latitude: 9.99
+  longitude: 9.99
