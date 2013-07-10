@@ -1,23 +1,75 @@
+<div class="page-header">
+	<h1>Results</h1>
+	<h3>
+		<small>
+			<label class="checkbox">
+				<input type="checkbox" value="" onclick="toggleAutoRefresh(this);" id="reloadCB">
+				Auto Refresh
+			</label>
+		</small>
+	</h3>
+</div>
+
+
+
 <%= gmaps4rails(@json) %>
 
-<h1>VS</h1>
-<table>
-	<tr>
-		<td>Route</td>
-		<td>1st Bus</td>
-		<td>2nd Bus</td>
-		<td>3rd Bus</td>
-	</tr>
-	<% @stop_times.each do |st| %>
-	<tr>
-		<td><%= st.route.no %></td>
-		<% st.adjusted_times.each do |at| %>
-		<td><%= at.time_left %><%= "*" if at.scheduled? %></td>
-		<% end %>
-	</tr>
-	<% end %>
-</table>
+<% @stop_times.each_with_index do |stop_time, index| %>
+<div class="span5">
+	<h4>Busses for Route <%= stop_time.route.no %> at Stop <%= stop_time.stop.code %> <%= image_tag "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{cycle("FE7569", "008000")}" %></h4>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Time Left</th>
+				<th>Arrive Time</th>
+				<th>Age</th>
+				<th>Live?</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% stop_time.adjusted_times.each_with_index do |adjusted_time, index| %>
+			<tr>
+				<td>Bus <%= index+1 %></td>
+				<td><%= adjusted_time.time_left %></td>
+				<td><%= adjusted_time.arrival_time %></td>
+				<td><%= show_age adjusted_time %></td>
+				<td><%= label_for adjusted_time %></td>
+			</tr>
+			<% end %>
+		</tbody>
+	</table>
+</div>
+<div class="span1"></div>
+<% end %>
 
-# add boolean for gps data or not <br>
-# improve stop_time with relationship <br>
-# auto refresh
+<%= content_for :scripts do %>
+<script type="text/javascript" charset="utf-8">
+
+
+var reloading;
+
+function checkReloading() {
+	if (window.location.hash=="#autoreload") {
+		reloading=setTimeout("window.location.reload();", 30000);
+		document.getElementById("reloadCB").checked=true;
+	}
+}
+
+function toggleAutoRefresh(cb) {
+	if (cb.checked) {
+		window.location.replace("#autoreload");
+		reloading=setTimeout("window.location.reload();", 30000);
+	} else {
+		window.location.replace("#");
+		clearTimeout(reloading);
+	}
+}
+
+window.onload=checkReloading();
+
+Gmaps.loadMaps()
+
+
+</script>
+<% end %>

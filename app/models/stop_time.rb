@@ -18,13 +18,11 @@ class StopTime < ActiveRecord::Base
         :routeNo => route.no
         }))
 
-    ctr = 0
     response.xpath("//routedirection").each do |rd|
       if route.direction == rd.at("direction").content.to_s
-        Nokogiri.HTML(rd.to_s).xpath("//trip").each do |trip|
-          if ctr < self.adjusted_times.size
-            self.adjusted_times[ctr].update_with_trip(trip)
-            ctr += 1
+        Nokogiri.HTML(rd.to_s).xpath("//trip").each_with_index do |trip, index|
+          if index < self.adjusted_times.size
+            self.adjusted_times[index].update_with_trip(trip)
           end
         end
         break

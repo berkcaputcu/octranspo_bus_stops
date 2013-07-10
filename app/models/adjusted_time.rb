@@ -10,6 +10,18 @@ class AdjustedTime < ActiveRecord::Base
 		self.age.blank? or self.age < 0
 	end
 
+	def live?
+		!scheduled?
+	end
+
+	def age_in_seconds
+		age * 60
+	end
+
+	def arrival_time
+		self.time_left.minutes.from_now.localtime.strftime("%H:%M")
+	end
+
 	def update_with_trip (trip)
 		self.time_left = trip.at("adjustedscheduletime").content.to_i
 		self.age = trip.at("adjustmentage").content.to_f

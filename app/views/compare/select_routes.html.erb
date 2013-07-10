@@ -1,35 +1,30 @@
+
+<div class="page-header">
+	<h1>Select Routes</h1>
+</div>
+
 <%= form_tag '/compare/result', method: :get do %>
 
-<table>
-	<tr>
-		<% @stops.each do |stop| %>
-		<td>[Stop: <%= stop.full_name %> Count: <%= stop.refresh_count %>]</td>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Stop Name</th>
+			<th>Route</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @stops.each_with_index do |stop, index| %>
+		<tr>
+			<td>Stop <%= index+1 %></td>
+			<td><%= stop.full_name %></td>
+			<td><%= select_tag "routes[#{stop.id}]", options_from_collection_for_select(stop.routes, 'id', 'full_name') %></td>
+		</tr>
 		<% end %>
-	</tr>
-	<tr>
-		<% @stops.each do |stop| %>
-		<td>
-			<table>
-				<tr>
-					<td></td>
-					<td>Route</td>
-					<td>Direction</td>
-				</tr>
-				<% stop.routes.each do |route| %>
-				<tr>
-					<td><%= radio_button_tag "routes[#{stop.id}]", route.id %></td>
-					<td><%= route[:no] %></td>
-					<td><%= route[:direction] %></td>
-				</tr>
-				<% end %>
-			</table>
-		</td>
-		<% end %>
-	</tr>
+	</tbody>
 </table>
 
-<%= submit_tag 'Go' %>
+<%= submit_tag 'Go', class: "btn btn-success" %>
 
 <% end %>
 
-# notes: autoselect radio buttons

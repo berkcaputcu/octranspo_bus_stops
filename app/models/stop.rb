@@ -21,8 +21,8 @@ class Stop < ActiveRecord::Base
   end
 
   def expired?
-  	# expires_at.blank? or Time.now > expires_at
-    expires_at.blank? or 2.days.from_now > expires_at
+  	expires_at.blank? or Time.now > expires_at
+    #expires_at.blank? or 2.days.from_now > expires_at
   end
 
   def refreshed

@@ -1,41 +1,95 @@
+<div class="page-header">
+	<h1>Select Stops</h1>
+</div>
 
 <%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false}, markers: { data: @json, options: { do_clustering: true, clusterer_maxZoom: 13 } }) %>
 
-Select 1st Stop
-Left click to see info, Right click to select
-
 <%= form_tag '/compare/select_routes', :method => :get, id: 'stops_form' do %>
-<% end %>
 
+<h3>Selected Stops</h3>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Code</th>
+			<th>Name</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Stop 1</td>
+			<td id="code_stop1"></td>
+			<td id="name_stop1"></td>
+		</tr>
+		<tr>
+			<td>Stop 2</td>
+			<td id="code_stop2"></td>
+			<td id="name_stop2"></td>
+		</tr>
+	</tbody>
+</table>
+
+<%= button_tag 'Reset', class: "btn btn-warning", id: "stops_form_reset", type: "reset" %>
+<%= submit_tag 'Next', class: "btn btn-success disabled", id: "stops_form_submit", disabled: true %>
+
+<% end %>
 
 <%= content_for :scripts do %>
 <script type="text/javascript" charset="utf-8">
-Gmaps.map.callback = function() {
+$(function() {
+
 	var stop1_selected = false;
 	var selected_stops = [];
 
-	for (var i = 0; i <  Gmaps.map.markers.length; ++i) {
-		var marker = Gmaps.map.markers[i].serviceObject
-		marker.marker_id = Gmaps.map.markers[i].id;
-		marker.marker_name = Gmaps.map.markers[i].name;
-		google.maps.event.addListener(marker, 'rightclick', function() {
-			var answer = confirm("Do you want to select stop: " + this.marker_name + "?");
-			if (!stop1_selected && answer) {
-				selected_stops.push(this.marker_id);
-				// Hide first info, populate stop1 info with this marker info
-				// rest call to find which stop
-				stop1_selected = true;
-			} else if (stop1_selected && answer) {
-				selected_stops.push(this.marker_id);
-				// Either submit here, or let people click next
-				$('<input type="hidden">').attr({
-					name: 'stops',
-					value: selected_stops
-				}).appendTo('#stops_form');
-				$('#stops_form').submit();
+	$("#stops_form_reset").click(function(){
+		stop1_selected = false;
+		selected_stops = [];
+		$("#name_stop1").text("");
+		$("#code_stop1").text("");
+		$("#name_stop2").text("");
+		$("#code_stop2").text("");
+		$('#stops_form_submit').addClass("disabled");
+		$('#stops_form_submit').addAttr("disabled");
+	});
+
+	Gmaps.map.callback = function() {
+
+		for (var i = 0; i <  Gmaps.map.markers.length; ++i) {
+			var marker = Gmaps.map.markers[i].serviceObject
+			marker.marker_id = Gmaps.map.markers[i].id;
+			marker.marker_name = Gmaps.map.markers[i].name;
+			google.maps.event.addListener(marker, 'rightclick', function() {
+				var answer = confirm("Do you want to select stop: " + this.marker_name + "?");
+				if (!stop1_selected && answer) {
+					selected_stops.push(this.marker_id);
+					getStop(this.marker_id, 1);
+					stop1_selected = true;
+				} else if (stop1_selected && answer && selected_stops.length < 2) {
+					selected_stops.push(this.marker_id);
+					getStop(this.marker_id, 2);
+					$('<input type="hidden">').attr({
+						name: 'stops',
+						value: selected_stops
+					}).appendTo('#stops_form');
+
+					$('#stops_form_submit').removeClass("disabled");
+					$('#stops_form_submit').removeAttr("disabled");
+				}
+			});
+		}
+	};
+
+	function getStop(stop_id, stop_index) {
+		$.ajax({
+			url: "/stops/" + stop_id + ".json",
+			success: function (data) {
+				$("#code_stop" + stop_index).text(data.code);
+				$("#name_stop" + stop_index).text(data.name);
 			}
 		});
 	}
-}
+
+});
+
 </script>
 <% end %>
