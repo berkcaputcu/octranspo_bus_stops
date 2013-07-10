@@ -8,7 +8,7 @@
 
 require 'CSV'
 
-CSV.foreach('./stops.txt', :headers => true) do |csv_obj|
+CSV.foreach('stops.txt', :headers => true) do |csv_obj|
 
 	Stop.create(code: csv_obj['stop_code'], name: csv_obj['stop_name'], lat: csv_obj['stop_lat'], long: csv_obj['stop_lon'])
 
