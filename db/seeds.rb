@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-require 'CSV'
+require 'csv'
 require 'open-uri'
 
 CSV.foreach(open('http://dl.dropboxusercontent.com/u/3243565/stops.txt'), :headers => true) do |csv_obj|
