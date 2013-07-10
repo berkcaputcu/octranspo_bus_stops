@@ -7,7 +7,7 @@ class AdjustedTime < ActiveRecord::Base
 	attr_accessible :age, :latitude, :longitude, :time_left
 
 	def scheduled?
-		self.age < 0
+		self.age.blank? or self.age < 0
 	end
 
 	def update_with_trip (trip)
