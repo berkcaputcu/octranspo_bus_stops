@@ -19,11 +19,15 @@ class AdjustedTime < ActiveRecord::Base
 	end
 
 	def gmaps4rails_infowindow
-		"#{self.stop_time.route.full_name}"
+		"#{self.route.full_name}"
 	end
 
 	def route
 		self.stop_time.route
+	end
+
+	def stop
+		self.stop_time.stop
 	end
 
 end
