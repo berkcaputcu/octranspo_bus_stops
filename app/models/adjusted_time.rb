@@ -15,11 +15,19 @@ class AdjustedTime < ActiveRecord::Base
 	end
 
 	def age_in_seconds
-		age * 60
+		if !self.age.blank?
+			self.age * 60
+		else
+			-1 # scheduled time
+		end
 	end
 
 	def arrival_time
-		self.time_left.minutes.from_now.localtime.strftime("%H:%M")
+		if !self.time_left.blank?
+			self.time_left.minutes.from_now.localtime.strftime("%H:%M")
+		else
+			" - "
+		end
 	end
 
 	def update_with_trip (trip)
