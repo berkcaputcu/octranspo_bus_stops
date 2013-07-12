@@ -17,10 +17,9 @@ class CompareController < ApplicationController
 	def result
 		route_ids = params[:routes]
 		@stop_times = []
-		to_map = []
 		json_array = []
 
-		marker_colors = ["FE7569", "008000"]
+		@marker_colors = ["FE7569", "008000", "FFA500", "0000FF", "00FF00", "FFFF00", "800000" , "808000", "00FFFF", "ADD8E6"]
 		color_ctr = -1
 		
 		route_ids.each do |stop_id, route_id|
@@ -28,7 +27,14 @@ class CompareController < ApplicationController
 			stop = Stop.find(stop_id)
 			route = Route.find(route_id)
 
-			json_array << stop.to_gmaps4rails
+			json_array << stop.to_gmaps4rails do |stop, marker|
+				marker.picture({
+					:picture => ActionController::Base.helpers.asset_path("stop.png"),
+					:width   => 32,
+					:height  => 37,
+					:marker_anchor => [15, 34],
+					})
+			end
 
 			stop_time = route.stop_times.find_or_create_by_stop_id(stop_id)
 			stop_time.update_times
@@ -37,7 +43,7 @@ class CompareController < ApplicationController
 				unless adjusted_time.scheduled?
 					json_array << adjusted_time.to_gmaps4rails do |bus, marker|
 						marker.picture({
-							:picture => "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{marker_colors[color_ctr]}",
+							:picture => "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{@marker_colors[color_ctr]}",
 							:shadow_picture => "http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
 							:width   => 21,
 							:height  => 43,
@@ -53,17 +59,6 @@ class CompareController < ApplicationController
 			@stop_times << stop_time
 		end
 
-		bus_route_id = nil
-
-
-		json_array << to_map.to_gmaps4rails do |bus, marker|
-			if !bus_route_id or bus_route_id != bus.route.id
-				bus_route_id = bus.route.id
-				
-			end
-
-		end
-		
 		temp = []
 		json_array.each do |j|
 			temp += JSON.parse(j)

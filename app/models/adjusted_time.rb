@@ -10,6 +10,10 @@ class AdjustedTime < ActiveRecord::Base
 		self.age.blank? or self.age < 0
 	end
 
+	def coordinates
+		"#{self.latitude}, #{self.longitude}"
+	end
+
 	def live?
 		!scheduled?
 	end

@@ -1,13 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  time_left: 1
-  age: 9.99
-  latitude: 9.99
-  longitude: 9.99
+  time_left: 14
+  age: 0.5
+  latitude: 42.414233
+  longitude: -75.712675
+  stop_time: one (StopTime)
 
 two:
-  time_left: 1
-  age: 9.99
-  latitude: 9.99
-  longitude: 9.99
+  time_left: 10
+  age: -1
+  latitude: 42.414233
+  longitude: -75.712675
+  stop_time: two (StopTime)

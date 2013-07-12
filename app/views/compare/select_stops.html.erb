@@ -7,7 +7,7 @@
 <%= form_tag '/compare/select_routes', :method => :get, id: 'stops_form' do %>
 
 <h3>Selected Stops</h3>
-<table class="table table-bordered">
+<table class="table table-bordered" id="selected_stops_table">
 	<thead>
 		<tr>
 			<th>#</th>
@@ -16,16 +16,6 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
-			<td>Stop 1</td>
-			<td id="code_stop1"></td>
-			<td id="name_stop1"></td>
-		</tr>
-		<tr>
-			<td>Stop 2</td>
-			<td id="code_stop2"></td>
-			<td id="name_stop2"></td>
-		</tr>
 	</tbody>
 </table>
 
@@ -38,16 +28,13 @@
 <script type="text/javascript" charset="utf-8">
 $(function() {
 
-	var stop1_selected = false;
 	var selected_stops = [];
 
 	$("#stops_form_reset").click(function(){
-		stop1_selected = false;
 		selected_stops = [];
-		$("#name_stop1").text("");
-		$("#code_stop1").text("");
-		$("#name_stop2").text("");
-		$("#code_stop2").text("");
+
+		$('#selected_stops_table tbody').empty();
+
 		$('#stops_form_submit').addClass("disabled");
 		$('#stops_form_submit').addAttr("disabled");
 	});
@@ -59,22 +46,27 @@ $(function() {
 			marker.marker_id = Gmaps.map.markers[i].id;
 			marker.marker_name = Gmaps.map.markers[i].name;
 			google.maps.event.addListener(marker, 'rightclick', function() {
-				var answer = confirm("Do you want to select stop: " + this.marker_name + "?");
-				if (!stop1_selected && answer) {
-					selected_stops.push(this.marker_id);
-					getStop(this.marker_id, 1);
-					stop1_selected = true;
-				} else if (stop1_selected && answer && selected_stops.length < 2) {
-					selected_stops.push(this.marker_id);
-					getStop(this.marker_id, 2);
-					$('<input type="hidden">').attr({
-						name: 'stops',
-						value: selected_stops
-					}).appendTo('#stops_form');
 
-					$('#stops_form_submit').removeClass("disabled");
-					$('#stops_form_submit').removeAttr("disabled");
+				if (selected_stops.length >= 10) {
+					alert("Cannot add more than 10 stops.");
+				} else {
+					var answer = confirm("Do you want to select stop: " + this.marker_name + "?");
+
+					if (answer) {
+						selected_stops.push(this.marker_id);
+						getStop(this.marker_id, selected_stops.length);
+
+						$('<input type="hidden">').attr({
+							name: 'stops',
+							value: selected_stops
+						}).appendTo('#stops_form');
+
+						$('#stops_form_submit').removeClass("disabled");
+						$('#stops_form_submit').removeAttr("disabled");
+
+					}
 				}
+
 			});
 		}
 	};
@@ -83,8 +75,7 @@ $(function() {
 		$.ajax({
 			url: "/stops/" + stop_id + ".json",
 			success: function (data) {
-				$("#code_stop" + stop_index).text(data.code);
-				$("#name_stop" + stop_index).text(data.name);
+				$('#selected_stops_table > tbody:last').append("<tr><td>Stop " + stop_index + "</td><td>" + data.code + "</td><td>" + data.name + "</td></tr>");
 			}
 		});
 	}

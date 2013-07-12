@@ -1,9 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  stop_id: 1
-  stop_name: MyString
+	name: BRONSON / GLADSTONE
+	code: 6624
+	lat: 42.414233
+	long: -75.712675
+	expires_at: 2013-02-11
+	refresh_count:
 
 two:
-  stop_id: 1
-  stop_name: MyString
+	name: BANK / MCLEOD
+	code: 2489
+	lat: 42.414233
+	long: -75.712675
+	expires_at: 2010-02-11
+	refresh_count:

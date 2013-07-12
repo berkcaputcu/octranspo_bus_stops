@@ -2,8 +2,8 @@
 
 one:
   'no': 1
-  direction: MyString
+  direction: Southbound
 
 two:
-  'no': 1
-  direction: MyString
+  'no': 4
+  direction: Southbound

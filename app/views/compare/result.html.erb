@@ -10,13 +10,11 @@
 	</h3>
 </div>
 
-
-
 <%= gmaps4rails(@json) %>
 
 <% @stop_times.each_with_index do |stop_time, index| %>
 <div class="span5">
-	<h4>Busses for Route <%= stop_time.route.no %> at Stop <%= stop_time.stop.code %> <%= image_tag "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{cycle("FE7569", "008000")}" %></h4>
+	<h4>Busses for Route <%= stop_time.route.no %> at Stop <%= stop_time.stop.code %> <%= image_tag "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{cycle(*@marker_colors, name: "marker_colors_cycle")}" %></h4>
 	<table class="table table-bordered">
 		<thead>
 			<tr>
@@ -40,7 +38,7 @@
 		</tbody>
 	</table>
 </div>
-<div class="span1"></div>
+<%= cycle("<div class='span1'></div>".html_safe, "", name: "span_or_not") %>
 <% end %>
 
 <%= content_for :scripts do %>
