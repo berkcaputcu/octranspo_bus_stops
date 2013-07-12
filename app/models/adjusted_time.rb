@@ -25,6 +25,7 @@ class AdjustedTime < ActiveRecord::Base
 	def arrival_time
 		if !self.time_left.blank?
 			self.time_left.minutes.from_now.localtime.strftime("%H:%M")
+			# bug with local time, gets local time of the server
 		else
 			" - "
 		end
