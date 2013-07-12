@@ -2,3 +2,5 @@
 
 * You need to update stops.txt if outdated (http://data.ottawa.ca/en/dataset/oc-transpo-schedules/resource/c460cbb0-f388-4006-8756-2ef63df60830)
 * rake db:seeds
+
+* Demo: http://octranspo-stop-times.herokuapp.com/
