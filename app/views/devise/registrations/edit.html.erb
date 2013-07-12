@@ -1,0 +1,23 @@
+<div class="page-header">
+  <h2>Edit <%= resource_name.to_s.humanize %></h2>
+</div>
+
+<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+  <%= f.error_notification %>
+
+    <%= f.input :username, :required => true, :autofocus => true %>
+
+    <%= f.input :email, :required => true, :autocomplete => "off" %>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
+    <% end %>
+
+    <%= f.input :password, :autocomplete => "off", :placeholder => "New password", :required => false %>
+    <%= f.input :password_confirmation, :required => false, :placeholder => "New password confirmation" %>
+    <%= f.input :current_password, :placeholder => "To confirm your changes", :required => true %>
+
+    <%= f.button :submit, "Update" %>
+<% end %>
+
+<%= link_to "Back", :back %>

@@ -2,6 +2,8 @@ OctranspoStopTimes::Application.routes.draw do
   
 
 
+  devise_for :users
+
   # get "compare/select_stops"
 
   # get "compare/select_routes"

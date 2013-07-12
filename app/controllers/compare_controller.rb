@@ -17,6 +17,7 @@ class CompareController < ApplicationController
 	def result
 		route_ids = params[:routes]
 		@stop_times = []
+		@bus_times = []
 		json_array = []
 
 		@marker_colors = ["FE7569", "008000", "FFA500", "0000FF", "00FF00", "FFFF00", "800000" , "808000", "00FFFF", "ADD8E6"]
@@ -41,6 +42,8 @@ class CompareController < ApplicationController
 
 			stop_time.adjusted_times.each do |adjusted_time|
 				unless adjusted_time.scheduled?
+					@bus_times << adjusted_time
+
 					json_array << adjusted_time.to_gmaps4rails do |bus, marker|
 						marker.picture({
 							:picture => "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{@marker_colors[color_ctr]}",
@@ -58,6 +61,8 @@ class CompareController < ApplicationController
 
 			@stop_times << stop_time
 		end
+
+		@bus_times.sort! { |bus_time1, bus_time2| bus_time1.time_left <=> bus_time2.time_left }
 
 		temp = []
 		json_array.each do |j|

@@ -12,34 +12,73 @@
 
 <%= gmaps4rails(@json) %>
 
-<% @stop_times.each_with_index do |stop_time, index| %>
-<div class="span5">
-	<h4>Busses for Route <%= stop_time.route.no %> at Stop <%= stop_time.stop.code %> <%= image_tag "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{cycle(*@marker_colors, name: "marker_colors_cycle")}" %></h4>
-	<table class="table table-bordered">
-		<thead>
-			<tr>
-				<th>#</th>
-				<th>Time Left</th>
-				<th>Arrive Time</th>
-				<th>Age</th>
-				<th>Live?</th>
-			</tr>
-		</thead>
-		<tbody>
-			<% stop_time.adjusted_times.each_with_index do |adjusted_time, index| %>
-			<tr>
-				<td>Bus <%= index+1 %></td>
-				<td><%= adjusted_time.time_left %></td>
-				<td><%= adjusted_time.arrival_time %></td>
-				<td><%= show_age adjusted_time %></td>
-				<td><%= label_for adjusted_time %></td>
-			</tr>
-			<% end %>
-		</tbody>
-	</table>
+<br>
+
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#stops" data-toggle="tab">Stops</a></li>
+	<li><a href="#buses" data-toggle="tab">Buses</a></li>
+</ul>
+
+<div class="tab-content">
+	<div class="tab-pane active" id="stops">
+		<% @stop_times.each_with_index do |stop_time, index| %>
+		<div class="span5">
+			<h4>Busses for Route <%= stop_time.route.no %> at Stop <%= stop_time.stop.code %> <%= image_tag "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{cycle(*@marker_colors, name: "marker_colors_cycle")}" %></h4>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Time Left</th>
+						<th>Arrive Time</th>
+						<th>Age</th>
+						<th>Live?</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% stop_time.adjusted_times.each_with_index do |adjusted_time, index| %>
+					<tr>
+						<td>Bus <%= index+1 %></td>
+						<td><%= adjusted_time.time_left %></td>
+						<td><%= adjusted_time.arrival_time %></td>
+						<td><%= show_age adjusted_time %></td>
+						<td><%= label_for adjusted_time %></td>
+					</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+		<%= cycle("<div class='span1'></div>".html_safe, "", name: "span_or_not") %>
+		<% end %>
+	</div>
+	<div class="tab-pane" id="buses">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Stop</th>
+					<th>Route</th>
+					<th>Time Left</th>
+					<th>Arrive Time</th>
+					<th>Age</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @bus_times.each_with_index do |bus_time, index| %>
+				<tr>
+					<td><%= index+1 %></td>
+					<td><%= bus_time.stop.full_name %></td>
+					<td><%= bus_time.route.full_name %></td>
+					<td><%= bus_time.time_left %></td>
+					<td><%= bus_time.arrival_time %></td>
+					<td><%= show_age bus_time %></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
 </div>
-<%= cycle("<div class='span1'></div>".html_safe, "", name: "span_or_not") %>
-<% end %>
+
+
 
 <%= content_for :scripts do %>
 <script type="text/javascript" charset="utf-8">
