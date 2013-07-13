@@ -28,14 +28,7 @@ class CompareController < ApplicationController
 			stop = Stop.find(stop_id)
 			route = Route.find(route_id)
 
-			json_array << stop.to_gmaps4rails do |stop, marker|
-				marker.picture({
-					:picture => ActionController::Base.helpers.asset_path("stop.png"),
-					:width   => 32,
-					:height  => 37,
-					:marker_anchor => [15, 34],
-					})
-			end
+			json_array << stop.to_gmaps4rails
 
 			stop_time = route.stop_times.find_or_create_by_stop_id(stop_id)
 			stop_time.update_times

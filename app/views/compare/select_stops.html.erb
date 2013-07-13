@@ -1,5 +1,10 @@
 <div class="page-header">
 	<h1>Select Stops</h1>
+	<h3>
+		<small>
+			Right click on markers to select stops
+		</small>
+	</h3>
 </div>
 
 <%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false}, markers: { data: @json, options: { do_clustering: true, clusterer_maxZoom: 13 } }) %>

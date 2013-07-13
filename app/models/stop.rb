@@ -34,6 +34,15 @@ class Stop < ActiveRecord::Base
     "#{self.full_name}"
   end
 
+  def gmaps4rails_marker_picture
+    {
+      :picture => ActionController::Base.helpers.asset_path("stop.png"),
+      :width   => 32,
+      :height  => 37,
+      :marker_anchor => [15, 34],
+    }
+  end
+
   def routes_with_refresh
     if self.expired?
       response = Nokogiri::HTML(RestClient.post(
