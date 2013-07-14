@@ -1,7 +1,7 @@
 <div class="page-header">
 	<h1>Select Stops</h1>
 	<h3>
-		<small>
+		<small><span class="label label-info">Tip</span>
 			Right click on markers to select stops
 		</small>
 	</h3>
@@ -11,7 +11,7 @@
 
 <%= form_tag '/compare/select_routes', :method => :get, id: 'stops_form' do %>
 
-<h3>Selected Stops</h3>
+<h3>Selected Stops <%= image_tag("loading.gif", class: "hidden", id: "loading_indicator") %></h3>
 <table class="table table-bordered" id="selected_stops_table">
 	<thead>
 		<tr>
@@ -25,7 +25,7 @@
 </table>
 
 <%= button_tag 'Reset', class: "btn btn-warning", id: "stops_form_reset", type: "reset" %>
-<%= submit_tag 'Next', class: "btn btn-success disabled", id: "stops_form_submit", disabled: true %>
+<%= button_tag 'Next', class: "btn btn-success disabled", id: "stops_form_submit", disabled: true %>
 
 <% end %>
 
@@ -42,6 +42,16 @@ $(function() {
 
 		$('#stops_form_submit').addClass("disabled");
 		$('#stops_form_submit').addAttr("disabled");
+	});
+
+	$("#stops_form_submit").click(function(){
+		$('<input type="hidden">').attr({
+			name: 'stops',
+			value: selected_stops
+		}).appendTo('#stops_form');
+
+		$("#stops_form").submit();
+		
 	});
 
 	Gmaps.map.callback = function() {
@@ -61,14 +71,8 @@ $(function() {
 						selected_stops.push(this.marker_id);
 						getStop(this.marker_id, selected_stops.length);
 
-						$('<input type="hidden">').attr({
-							name: 'stops',
-							value: selected_stops
-						}).appendTo('#stops_form');
-
 						$('#stops_form_submit').removeClass("disabled");
 						$('#stops_form_submit').removeAttr("disabled");
-
 					}
 				}
 
@@ -79,8 +83,14 @@ $(function() {
 	function getStop(stop_id, stop_index) {
 		$.ajax({
 			url: "/stops/" + stop_id + ".json",
+			beforeSend: function () {
+				$('#loading_indicator').removeClass("hidden");
+			},
 			success: function (data) {
 				$('#selected_stops_table > tbody:last').append("<tr><td>Stop " + stop_index + "</td><td>" + data.code + "</td><td>" + data.name + "</td></tr>");
+			},
+			complete: function () {
+				$('#loading_indicator').addClass("hidden");
 			}
 		});
 	}
