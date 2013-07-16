@@ -1,7 +1,5 @@
 OctranspoStopTimes::Application.routes.draw do
   
-
-
   devise_for :users
 
   # get "compare/select_stops"
@@ -10,11 +8,8 @@ OctranspoStopTimes::Application.routes.draw do
 
   # get "compare/result"
 
-  resources :routes
-  resources :stops
-  resources :stop_times
-  resources :adjusted_times
-
+  resources :stops, only: [:show]
+  resources :favorites, only: [:index, :show, :create, :destroy]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

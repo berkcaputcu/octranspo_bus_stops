@@ -14,3 +14,15 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require_tree .
+
+
+
+function addToFavorites (stop_time_id) {
+
+	$.ajax({
+		url: "/favorites.json",
+		type: "POST",
+		data: { 'favorite': { 'stop_time_id': stop_time_id }}
+	});
+
+}

@@ -1,5 +1,5 @@
 <div class="page-header">
-	<h1>Select Stops</h1>
+	<h1>Select Stops and Routes</h1>
 	<h3>
 		<small><span class="label label-info">Tip</span>
 			Right click on markers to select stops
@@ -7,9 +7,27 @@
 	</h3>
 </div>
 
-<%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false}, markers: { data: @json, options: { do_clustering: true, clusterer_maxZoom: 13 } }) %>
+<% if user_signed_in? %>
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#mapTab" data-toggle="tab">Map</a></li>
+	<li><a href="#favoritesTab" data-toggle="tab">Favorites</a></li>
+</ul>
 
-<%= form_tag '/compare/select_routes', :method => :get, id: 'stops_form' do %>
+<div class="tab-content">
+	<div class="tab-pane active" id="mapTab">
+		<%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false}, markers: { data: @json, options: { do_clustering: true, clusterer_maxZoom: 13 } }) %>
+	</div>
+	<div class="tab-pane" id="favoritesTab">
+		<div style="height:414px;">
+			Soon!
+		</div>
+	</div>
+</div>
+<% else %>
+<%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false}, markers: { data: @json, options: { do_clustering: true, clusterer_maxZoom: 13 } }) %>
+<% end %>
+
+<%= form_tag '/compare/result', :method => :get, id: 'stops_form' do %>
 
 <h3>Selected Stops <%= image_tag("loading.gif", class: "hidden", id: "loading_indicator") %></h3>
 <table class="table table-bordered" id="selected_stops_table">
@@ -18,6 +36,7 @@
 			<th>#</th>
 			<th>Code</th>
 			<th>Name</th>
+			<th>Route</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -45,10 +64,6 @@ $(function() {
 	});
 
 	$("#stops_form_submit").click(function(){
-		$('<input type="hidden">').attr({
-			name: 'stops',
-			value: selected_stops
-		}).appendTo('#stops_form');
 
 		$("#stops_form").submit();
 		
@@ -87,7 +102,16 @@ $(function() {
 				$('#loading_indicator').removeClass("hidden");
 			},
 			success: function (data) {
-				$('#selected_stops_table > tbody:last').append("<tr><td>Stop " + stop_index + "</td><td>" + data.code + "</td><td>" + data.name + "</td></tr>");
+				var tableRowHTML = "<tr><td>Stop " + stop_index + "</td><td>" + data.code + "</td><td>" + data.name + "</td><td><select id='routes_" + stop_id + "' name='routes[" + stop_id + "]'></select></td></tr>";
+
+				$('#selected_stops_table > tbody:last').append(tableRowHTML);
+
+				$.each(data.routes, function(key, value) {   
+					$("#routes_" + stop_id)
+					.append($("<option></option>")
+						.attr("value",value.id)
+						.text(value.no + " - " + value.direction)); 
+				});
 			},
 			complete: function () {
 				$('#loading_indicator').addClass("hidden");

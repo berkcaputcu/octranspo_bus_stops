@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130712175423) do
+ActiveRecord::Schema.define(:version => 20130715190856) do
 
   create_table "adjusted_times", :force => true do |t|
     t.integer  "time_left"
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(:version => 20130712175423) do
   end
 
   add_index "adjusted_times", ["stop_time_id"], :name => "index_adjusted_times_on_stop_time_id"
+
+  create_table "favorites", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "stop_time_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "favorites", ["user_id", "stop_time_id"], :name => "index_favorites_on_user_id_and_stop_time_id", :unique => true
 
   create_table "routes", :force => true do |t|
     t.integer  "no"

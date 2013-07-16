@@ -16,6 +16,10 @@ class Stop < ActiveRecord::Base
   	"#{code} - #{name}"
   end
 
+  def abbr_name
+    "<abbr title='#{self.full_name}'>Stop #{self.code}</abbr>".html_safe
+  end
+
   def coordinates
   	"#{lat}, #{long}"
   end

@@ -6,27 +6,13 @@ class CompareController < ApplicationController
 		end
 	end
 
-	def select_routes
-		
-		if params[:stops].blank?
-			redirect_to root_path
-			return
-		end
-
-		@stops = []
-		params[:stops].split(',').each do |stop_id|
-			@stops << Stop.find(stop_id)
-		end
-
-	end
-
 	def result
 
 		if params[:routes].blank?
 			redirect_to root_path
 			return
 		end
-		
+
 		route_ids = params[:routes]
 		@stop_times = []
 		@bus_times = []

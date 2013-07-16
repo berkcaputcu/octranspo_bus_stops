@@ -18,7 +18,7 @@
 				<%= link_to "Home", :root, class: "brand" %>
 				<div class="container nav-collapse">
 					<ul class="nav">
-						<li><%= link_to "Favorites", "#" %></li>
+						<li><%= link_to "Favorites", controller: "favorites", action: "index" %></li>
 					</ul>
 					<ul class="nav pull-right">
 						<% if user_signed_in? %>

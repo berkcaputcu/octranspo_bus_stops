@@ -12,4 +12,8 @@ class Route < ActiveRecord::Base
   	"#{no} - #{direction}"
   end
 
+  def abbr_name
+  	"<abbr title='#{self.full_name}'>Route #{self.no}</abbr>".html_safe
+  end
+
 end

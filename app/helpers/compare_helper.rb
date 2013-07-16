@@ -16,4 +16,12 @@ module CompareHelper
 		end
 	end
 
+	def favorite_button stop_time
+		if user_signed_in?
+			link_to_function "<i class='icon-star'></i> Add to favorites".html_safe, "addToFavorites(#{stop_time.id})", class: "btn btn-small pull-right"
+		else
+			button_tag "<i class='icon-star'></i> Add to favorites".html_safe, class: "btn btn-small pull-right disabled", disabled: true, title: "You must be signed in."
+		end
+	end
+
 end

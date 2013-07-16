@@ -10,6 +10,9 @@ class User < ActiveRecord::Base
   
   # attr_accessible :title, :body
 
+  has_many :favorites
+  has_many :favorite_stop_times, through: :favorites, class_name: "StopTime"
+
   validates_presence_of :username
 
   def find_for_database_authentication

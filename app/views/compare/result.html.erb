@@ -15,15 +15,15 @@
 <br>
 
 <ul class="nav nav-tabs">
-	<li class="active"><a href="#stops" data-toggle="tab">Stops</a></li>
-	<li><a href="#buses" data-toggle="tab">Buses</a></li>
+	<li class="active"><a href="#stopsTab" data-toggle="tab">Stops</a></li>
+	<li><a href="#busesTab" data-toggle="tab">Buses</a></li>
 </ul>
 
 <div class="tab-content">
-	<div class="tab-pane active" id="stops">
+	<div class="tab-pane active" id="stopsTab">
 		<% @stop_times.each_with_index do |stop_time, index| %>
 		<div class="span5">
-			<h4>Busses for Route <%= stop_time.route.no %> at Stop <%= stop_time.stop.code %> <%= image_tag "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{cycle(*@marker_colors, name: "marker_colors_cycle")}" %></h4>
+			<h4><%= image_tag "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{cycle(*@marker_colors, name: "marker_colors_cycle")}" %> Busses for <%= stop_time.route.abbr_name %> at <%= stop_time.stop.abbr_name %> <%= favorite_button stop_time %></h4>
 			<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -50,7 +50,7 @@
 		<%= cycle("<div class='span1'></div>".html_safe, "", name: "span_or_not") %>
 		<% end %>
 	</div>
-	<div class="tab-pane" id="buses">
+	<div class="tab-pane" id="busesTab">
 		<table class="table table-bordered">
 			<thead>
 				<tr>
