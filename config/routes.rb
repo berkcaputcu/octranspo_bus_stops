@@ -9,7 +9,11 @@ OctranspoStopTimes::Application.routes.draw do
   # get "compare/result"
 
   resources :stops, only: [:show]
-  resources :favorites, only: [:index, :show, :create, :destroy]
+  resources :favorites, only: [:index, :show, :create, :destroy] do
+    collection do
+      delete 'destroy'
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

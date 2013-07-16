@@ -15,8 +15,14 @@ class User < ActiveRecord::Base
 
   validates_presence_of :username
 
-  def find_for_database_authentication
-  	
+  def favorite stop_time
+
+    if stop_time.blank?
+      return
+    else
+      self.favorites.create(stop_time_id: stop_time.id)
+    end
+
   end
 
 end

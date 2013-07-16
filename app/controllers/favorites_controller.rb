@@ -22,23 +22,37 @@ class FavoritesController < ApplicationController
   # POST /favorites
   # POST /favorites.json
   def create
-  	@favorite = current_user.favorites.create(params[:favorite])
+    if params[:stop_time_id].blank?
+      redirect_to :root
+      return
+    end
+    
+    @stop_time = StopTime.find_by_id(params[:stop_time_id])
+    @favorite = (@stop_time)? current_user.favorite(@stop_time) : nil
 
-  	respond_to do |format|
-  		format.json { render json: @favorite, status: :created, location: @favorite }
-  	end
+    respond_to do |format|
+      if @favorite
+        format.json { render json: @favorite, status: :created, location: @favorite }
+      else
+        format.json { render json: 'StopTime does not exist', status: :unprocessable_entity }
+      end
+    end
   end
 
-  # DELETE /favorites/1
-  # DELETE /favorites/1.json
+  # DELETE /favorites
+  # DELETE /favorites.json
   def destroy
-  	@favorite = Favorite.find(params[:id])
-  	@favorite.destroy
+    if params[:stop_time_id].blank?
+      redirect_to :root
+      return
+    end
 
-  	respond_to do |format|
-  		format.html { redirect_to favorites_url }
-  		format.json { head :no_content }
-  	end
+    @favorite = current_user.favorites.find_by_stop_time_id(params[:stop_time_id])
+    @favorite.destroy if @favorite
+
+    respond_to do |format|
+      format.json { head :no_content }
+    end
   end
   
 end

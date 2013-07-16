@@ -22,7 +22,27 @@ function addToFavorites (stop_time_id) {
 	$.ajax({
 		url: "/favorites.json",
 		type: "POST",
-		data: { 'favorite': { 'stop_time_id': stop_time_id }}
+		data: { 'stop_time_id': stop_time_id },
+		success: function () {
+			$("#fav_" + stop_time_id).attr("title", "Remove from favorites");
+			$("#fav_" + stop_time_id).attr("onclick", "removeFromFavorites(" + stop_time_id + ")");
+			$("#fav_" + stop_time_id + " i").removeClass("icon-star-empty").addClass("icon-star");
+		}
+	});
+
+}
+
+function removeFromFavorites (stop_time_id) {
+
+	$.ajax({
+		url: "/favorites.json",
+		type: "DELETE",
+		data: { 'stop_time_id': stop_time_id },
+		success: function () {
+			$("#fav_" + stop_time_id).attr("title", "Add to favorites");
+			$("#fav_" + stop_time_id).attr("onclick", "addToFavorites(" + stop_time_id + ")");
+			$("#fav_" + stop_time_id + " i").removeClass("icon-star").addClass("icon-star-empty");
+		}
 	});
 
 }
