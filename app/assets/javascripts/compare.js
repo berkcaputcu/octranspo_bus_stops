@@ -24,7 +24,7 @@ function getStop(stop_id, route_id) {
 
 				var tableRowHTML = "<tr><td>Stop " + (++selectCount) + "</td><td>" + data.code + "</td><td>" + data.name + "</td><td><select id='routes_" + stop_id + "' name='routes[" + stop_id + "]'>" + optionsArray.join() + "</select></td></tr>";
 
-				$('#selected_stops_table > tbody:last').append(tableRowHTML);
+				$(tableRowHTML).hide().appendTo('#selected_stops_table > tbody:last').fadeIn();
 
 				enableNextButton();
 			},
