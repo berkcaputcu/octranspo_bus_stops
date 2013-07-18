@@ -37,7 +37,7 @@ class CompareController < ApplicationController
 
 					json_array << adjusted_time.to_gmaps4rails do |bus, marker|
 						marker.picture({
-							:picture => "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{@marker_colors[color_ctr]}",
+							:picture => "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=#{bus.route.no}|#{@marker_colors[color_ctr]}",
 							:shadow_picture => "http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
 							:width   => 21,
 							:height  => 43,

@@ -23,7 +23,7 @@
 	<div class="tab-pane active" id="stopsTab">
 		<% @stop_times.each_with_index do |stop_time, index| %>
 		<div class="span5">
-			<h4><%= image_tag "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|#{cycle(*@marker_colors, name: "marker_colors_cycle")}" %> Busses for <%= stop_time.route.abbr_name %> at <%= stop_time.stop.abbr_name %> <div class="pull-right"><%= favorite_button stop_time %></div></h4>
+			<h4><%= image_tag "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=#{stop_time.route.no}|#{cycle(*@marker_colors, name: "marker_colors_cycle")}" %> Busses for <%= stop_time.route.abbr_name %> at <%= stop_time.stop.abbr_name %> <div class="pull-right"><%= favorite_button stop_time %></div></h4>
 			<table class="table table-bordered">
 				<thead>
 					<tr>

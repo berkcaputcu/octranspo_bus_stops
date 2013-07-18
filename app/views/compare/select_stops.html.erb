@@ -11,6 +11,7 @@
 <ul class="nav nav-tabs">
 	<li class="active"><a href="#mapTab" data-toggle="tab">Map</a></li>
 	<li><a href="#favoritesTab" data-toggle="tab">Favorites</a></li>
+	<li><a href="#historyTab" data-toggle="tab">History</a></li>
 </ul>
 
 <div class="tab-content">
@@ -35,6 +36,21 @@
 						<td><%= fav.route.full_name %></td>
 					</tr>
 					<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="tab-pane" id="historyTab">
+		<div class="span8" style="height:414px;">
+			<table class="table table-bordered" id="user_history_table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Stop</th>
+						<th>Route</th>
+					</tr>
+				</thead>
+				<tbody>
 				</tbody>
 			</table>
 		</div>
