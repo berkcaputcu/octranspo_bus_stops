@@ -13,10 +13,9 @@
 	<li><a href="#favoritesTab" data-toggle="tab">Favorites</a></li>
 	<li><a href="#historyTab" data-toggle="tab">History</a></li>
 </ul>
-
 <div class="tab-content">
 	<div class="tab-pane active" id="mapTab">
-		<%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false}, markers: { data: @json, options: { do_clustering: true, clusterer_maxZoom: 13 } }) %>
+		<%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false, center_latitude: 45.420833, center_longitude: -75.69}, markers: { data: @json, options: { do_clustering: true, clusterer_maxZoom: 13 } }) %>
 	</div>
 	<div class="tab-pane" id="favoritesTab">
 		<div class="span8" style="height:414px;">
@@ -57,7 +56,7 @@
 	</div>
 </div>
 <% else %>
-<%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false}, markers: { data: @json, options: { do_clustering: true, clusterer_maxZoom: 13 } }) %>
+<%= gmaps(map_options: {zoom: 16, detect_location: true, center_on_user: true, auto_adjust: false, center_latitude: 45.420833, center_longitude: -75.69}, markers: { data: @json, options: { do_clustering: true, clusterer_maxZoom: 13 } }) %>
 <% end %>
 
 <%= form_tag '/compare/result', :method => :get, id: 'stops_form' do %>
