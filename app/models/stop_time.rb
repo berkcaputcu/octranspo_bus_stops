@@ -3,8 +3,12 @@ class StopTime < ActiveRecord::Base
   belongs_to :route
 
   has_many :adjusted_times
+
   has_many :favorites
   has_many :favorited_users, through: :favorites, class_name: "User"
+
+  has_many :logs
+  has_many :logged_users, through: :logs, class_name: "User"
   
   validates_uniqueness_of :stop_id, scope: :route_id
 

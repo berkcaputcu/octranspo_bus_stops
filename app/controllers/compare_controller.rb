@@ -31,6 +31,10 @@ class CompareController < ApplicationController
 			stop_time = route.stop_times.find_or_create_by_stop_id(stop_id)
 			stop_time.update_times
 
+			if user_signed_in?
+				current_user.log stop_time
+			end
+
 			stop_time.adjusted_times.each do |adjusted_time|
 				unless adjusted_time.scheduled?
 					@bus_times << adjusted_time

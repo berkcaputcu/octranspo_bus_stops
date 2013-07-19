@@ -1,7 +1,7 @@
 
 var selectCount = 0
 
-function addFromFavorites(stop_id, route_id) {
+function addFromList(stop_id, route_id) {
 	getStop(stop_id, route_id);
 }
 
