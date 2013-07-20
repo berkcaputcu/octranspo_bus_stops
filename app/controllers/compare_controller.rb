@@ -1,6 +1,5 @@
 class CompareController < ApplicationController
 	def select_stops
-		@stops = Stop.all
 		@json = Stop.all.to_gmaps4rails do |stop, marker|
 			marker.json({ id: stop.id, name: stop.full_name })
 		end
@@ -21,8 +20,12 @@ class CompareController < ApplicationController
 		@marker_colors = ["FE7569", "008000", "FFA500", "0000FF", "00FF00", "FFFF00", "800000" , "808000", "00FFFF", "ADD8E6"]
 		color_ctr = -1
 		
-		route_ids.each do |stop_id, route_id|
+		route_ids.each do |stop_route_id|
 			color_ctr += 1
+
+			stop_id = stop_route_id.split(",")[0]
+			route_id = stop_route_id.split(",")[1]
+
 			stop = Stop.find(stop_id)
 			route = Route.find(route_id)
 

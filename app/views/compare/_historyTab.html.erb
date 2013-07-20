@@ -1,0 +1,24 @@
+<div class="tab-pane" id="historyTab">
+	<div class="span8" style="height:414px;">
+		<table class="table table-bordered" id="user_history_table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Stop</th>
+					<th>Route</th>
+					<th>When?</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% current_user.logs.each do |log| %>
+				<tr>
+					<td style="width: 36px;"><%= button_tag "<i class='icon-plus'></i>".html_safe, class: "btn btn-small", onclick: "addFromList(#{log.stop.id}, #{log.route.id});", title: "Add to list" %></td>
+					<td><%= log.stop.full_name %></td>
+					<td><%= log.route.full_name %></td>
+					<td><%= time_ago_in_words log.updated_at %> ago</td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
+</div>

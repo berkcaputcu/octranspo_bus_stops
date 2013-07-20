@@ -8,7 +8,11 @@ OctranspoStopTimes::Application.routes.draw do
 
   # get "compare/result"
 
-  resources :stops, only: [:show]
+  resources :stops, only: [:show, :search] do
+    collection do
+      post 'search'
+    end
+  end
   resources :favorites, only: [:index, :show, :create, :destroy] do
     collection do
       delete 'destroy'
