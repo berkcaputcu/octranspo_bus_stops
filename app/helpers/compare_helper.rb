@@ -10,7 +10,7 @@ module CompareHelper
 
 	def show_age adjusted_time
 		if adjusted_time.live?
-			"#{number_with_precision adjusted_time.age_in_seconds, precision: 2}s"
+			"#{number_with_precision adjusted_time.age_in_seconds, precision: 2}s ago"
 		else
 			" - "
 		end

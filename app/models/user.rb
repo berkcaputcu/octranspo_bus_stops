@@ -27,13 +27,6 @@ class User < ActiveRecord::Base
   end
 
   def log stop_time
-    # get this user's logs.
-    # if count < 10
-      # create new
-    # else
-      # find oldest log of this user
-      # update that with the new log
-    # end
     if stop_time.blank?
       return
     else
@@ -42,7 +35,6 @@ class User < ActiveRecord::Base
       if already_logged
         already_logged.touch
       else
-
         if self.logs.count < 10
           self.logs.create(stop_time_id: stop_time.id)  
         else
