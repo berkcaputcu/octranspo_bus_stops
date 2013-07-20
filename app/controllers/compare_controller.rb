@@ -65,5 +65,26 @@ class CompareController < ApplicationController
 		end
 		@json = temp.to_json
 
+		if session[:refresh].blank?
+			session[:refresh] = false
+		elsif session[:refresh]
+			if session[:refresh_count] > 1
+				session[:refresh_count] -= 1
+			else
+				session[:refresh_count] = 0
+				session[:refresh] = false
+			end
+		end
+
 	end
+
+	def refresh
+		session[:refresh] = true
+		session[:refresh_count] = 10
+
+		respond_to do |format|
+			format.js { head :no_content }
+		end
+	end
+
 end

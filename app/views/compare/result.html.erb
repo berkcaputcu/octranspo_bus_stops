@@ -89,16 +89,22 @@
 var reloading;
 
 function checkReloading() {
-	if (window.location.hash=="#autoreload") {
-		reloading=setTimeout("window.location.reload();", 30000);
-		document.getElementById("reloadCB").checked=true;
+	if (window.location.hash=="#autoreload" ) {
+		if (<%= session[:refresh] %>) {
+			reloading=setTimeout("window.location.reload();", 30000);
+			document.getElementById("reloadCB").checked=true;	
+		} else {
+			window.location.replace("#");
+		}
 	}
 }
 
 function toggleAutoRefresh(cb) {
 	if (cb.checked) {
-		window.location.replace("#autoreload");
-		reloading=setTimeout("window.location.reload();", 30000);
+		$.post('/compare/refresh.js', function() {
+			window.location.replace("#autoreload");
+			reloading=setTimeout("window.location.reload();", 30000);	
+		});
 	} else {
 		window.location.replace("#");
 		clearTimeout(reloading);
