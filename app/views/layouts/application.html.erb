@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title><%= content_for?(:title) ? yield(:title) : "OC Transpo - Stop Times" %></title>
+	<title><%= content_for?(:title) ? yield(:title) : "OC Transpo - Live Updates" %></title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 	<%= stylesheet_link_tag "application", :media => "all" %>
@@ -19,6 +19,7 @@
 				<div class="container">
 					<ul class="nav">
 						<li><%= link_to "Favorites", controller: "favorites", action: "index" %></li>
+						<li><%= link_to "About", controller: "pages", action: "about" %></li>
 					</ul>
 					<ul class="nav pull-right">
 						<% if user_signed_in? %>

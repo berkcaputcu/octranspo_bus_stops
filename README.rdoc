@@ -1,6 +1,7 @@
-== A Test Application for OCTranspo API
+== Sample Application for OCTranspo API
 
-* You need to update stops.txt if outdated (http://data.ottawa.ca/en/dataset/oc-transpo-schedules/resource/c460cbb0-f388-4006-8756-2ef63df60830)
-* rake db:seeds
+This application uses OC Transpo API to get real-time data for bus routes and stops. Most of the applications built with this API show only one route at a time. The idea behind this application was to create a web application that can get results for multiple routes on the same page and display them on the same map for better visualization and comparison. Registered users can add routes as favorites and access them easily while selecting stops. Also users can access their history which shows the user's last 10 requests.
 
-* Demo: http://octranspo-stop-times.herokuapp.com/
+* Open data: http://data.ottawa.ca/en/dataset/oc-transpo-schedules/resource/c460cbb0-f388-4006-8756-2ef63df60830
+
+* Demo: http://octranspo-live-updates.herokuapp.com/
