@@ -33,6 +33,8 @@ gem 'bootstrap-sass'
 gem 'simple_form'
 gem 'devise'
 gem 'newrelic_rpm'
+gem 'dalli'
+gem 'memcachier'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

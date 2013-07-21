@@ -12,6 +12,10 @@ class Stop < ActiveRecord::Base
 
   default_scope order('code ASC')
 
+  def self.all_cached
+    Rails.cache.fetch('Stop.all') { all }
+  end
+
   def full_name
   	"#{code} - #{name}"
   end
