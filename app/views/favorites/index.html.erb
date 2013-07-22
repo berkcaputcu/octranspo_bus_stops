@@ -17,7 +17,7 @@
 				<td style="width: 36px;"><%= favorite_button fav.stop_time %></td>
 				<td><%= fav.stop.full_name %></td>
 				<td><%= fav.route.full_name %></td>
-				<td style="width: 113px;"><%= link_to "<i class='icon-map-marker'></i> Show on Map".html_safe, {controller: "compare", action: "result", :"routes[#{fav.stop.id}]" => fav.route.id}, class: "btn btn-small" %></td>
+				<td style="width: 113px;"><%= link_to "<i class='icon-map-marker'></i> Show on Map".html_safe, {controller: "compare", action: "result", :"routes[]" => "#{fav.stop.id}, #{fav.route.id}"}, class: "btn btn-small" %></td>
 			</tr>
 			<% end %>
 		</tbody>
