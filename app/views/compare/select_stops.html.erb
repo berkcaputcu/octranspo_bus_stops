@@ -62,6 +62,10 @@
 <script type="text/javascript" charset="utf-8">
 $(function() {
 
+	Gmaps.map.jsTemplate = function(marker_container){
+		return "<button class='btn btn-small' name='button' onclick='getStop(" + marker_container.id + ");' title='Add to list' type='submit'><i class='icon-plus'></i></button> " + marker_container.description;
+	}
+
 	$("#stops_form_reset").click(function(){
 		resetCount();
 
